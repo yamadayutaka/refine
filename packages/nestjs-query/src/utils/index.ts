@@ -66,6 +66,11 @@ const operatorMap: { [key: string]: string } = {
   nin: "notIn",
 };
 
+const booleanOperatorMap: { [key: string]: string } = {
+  eq: "is",
+  ne: "isNot",
+};
+
 const operatorMapper = (
   operator: CrudOperators,
   value: any,
@@ -148,6 +153,11 @@ const operatorMapper = (
     }
 
     return { notBetween: { lower: value[0], upper: value[1] } };
+  }
+
+  // Primitive false cannot be specified as a value, so a Boolean object is used.
+  if (value instanceof Boolean) {
+    return { [booleanOperatorMap[operator]]: value.valueOf() };
   }
 
   return { [operatorMap[operator]]: value };

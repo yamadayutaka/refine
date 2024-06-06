@@ -156,4 +156,25 @@ describe("generateFilters", () => {
       expect(result).toEqual(expected);
     });
   });
+  it("should generate filter for BooleanFieldComparison", () => {
+    const testCases: { filters: CrudFilter[]; expected: any }[] = [
+      {
+        filters: [
+          { operator: "eq", field: "completed", value: new Boolean(true) },
+        ],
+        expected: { completed: { is: true } },
+      },
+      {
+        filters: [
+          { operator: "ne", field: "completed", value: new Boolean(false) },
+        ],
+        expected: { completed: { isNot: false } },
+      },
+    ];
+
+    testCases.forEach(({ filters, expected }) => {
+      const result = generateFilters(filters as LogicalFilter[]);
+      expect(result).toEqual(expected);
+    });
+  });
 });
